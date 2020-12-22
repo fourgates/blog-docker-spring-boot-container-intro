@@ -1,0 +1,23 @@
+x-config:
+  - &MVN_BUILDER "maven/builder:0.0.1"
+  - &CONTAINER_NAME "spring-container"
+  - &BUILDER_CONTAINER_NAME "maven-builder"
+version: "3.7"
+services:
+  dev:
+    image: *MVN_BUILDER
+    container_name: *CONTAINER_NAME
+    ports:
+      - "8080:8080"
+    volumes:
+      - "./src:/build/src"
+      - "./logs:/build/logs"
+    command: "mvn spring-boot:run"
+  maven:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - './src:/build/src'      
+    image: *MVN_BUILDER
+    container_name: *CONTAINER_NAME
